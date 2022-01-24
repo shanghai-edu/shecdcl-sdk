@@ -1,0 +1,16 @@
+{
+  "name": "shecgw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "shecgw.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "WANG Yuping",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "log4js": "^6.4.1",
+    "node-cache": "^5.1.2"
+  }
+}
