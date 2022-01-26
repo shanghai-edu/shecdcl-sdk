@@ -1,0 +1,48 @@
+{
+  "appenders":
+  {
+    "console":{
+      "type": "console"
+    },
+    "access":
+    {
+        "type": "dateFile",
+        "filename": "logs/access.log",
+        "pattern": "-yyyy-MM-dd",
+        "category": "http"
+    },
+    "system":
+    {
+        "type": "dateFile",
+        "filename": "logs/system.log",
+        "maxLogSize": 10485760,
+        "pattern": "-yyyy-MM-dd",
+        "numBackups": 3
+    },
+    "errorFile":
+    {
+        "type": "file",
+        "filename": "logs/error.log"
+    },
+    "error":
+    {
+        "type": "logLevelFilter",
+        "level": "ERROR",
+        "appender": "errorFile"
+    }
+  },
+  "categories":
+  {
+    "default":
+    {
+        "appenders": ["system", "error", "console"],
+        "level": "debug"
+    },
+    "http":
+    {
+        "appenders": ["access", "console"],
+        "level": "debug"
+    }
+  }
+}
+

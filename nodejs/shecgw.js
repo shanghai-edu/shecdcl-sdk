@@ -21,6 +21,12 @@ module.exports = class shecgw {
         stdTTL: 24 * 60 * 60 // 24 Hours
     })
 
+    debug (...args){
+      if (this.#debug){
+        logger.debug(args);
+      }
+    }
+
     constructor(appId, appSecret, apiGwEndPoint, debug = false) {
         if(!appId) throw 'Parameter appId cannot be null';
         if(!appSecret) throw 'Parameter appSecret cannot be null';
@@ -45,17 +51,17 @@ module.exports = class shecgw {
     async getAccessToken() {
         let token = this.#accessTokenCache.get('access_token');
         if (token !== undefined) {
-            logger.debug('found token: ', token);
+            this.debug('found token: ', token);
             return { code: "0", token: token };
         } else {
-            logger.debug('not found token, retrieve it from remote');
+            this.debug('not found token, retrieve it from remote');
         }
 
         const url = this.#getAccessTokenUrl + '?appId=' + this.#appId + '&appSecret=' + this.#appSecret;
         try {
             let res = await axios.get(url);
             let json = res.data;
-            logger.debug(json);
+            this.debug(json);
             if (json.hasOwnProperty('access_token')) {
                 token = json.access_token;
                 // Cache it
@@ -84,7 +90,7 @@ module.exports = class shecgw {
         }
 
         const token = await this.getAccessToken();
-        logger.debug('Token: ', token);
+        this.debug('Token: ', token);
         if (token.code !== '0') {
             logger.log('failed to get access token', token.message);
             return token;
@@ -102,7 +108,7 @@ module.exports = class shecgw {
         logger.log(postOptions);
 
         try {
-            logger.debug('get health');
+            this.debug('get health');
             let r = await axios.post(this.#getHealthUrl, postData, postOptions);
             logger.log(r.data)
             const result = r.data
@@ -155,11 +161,11 @@ module.exports = class shecgw {
             },
         }
 
-        logger.debug(postOptions);
+        this.debug(postOptions);
 
         try {
             let r = await axios.post(this.#getHsjcUrl, postData, postOptions);
-            logger.debug(r.data)
+            this.debug(r.data)
             const result = r.data
             if (result.code != 200) {
                 return {
@@ -202,7 +208,7 @@ module.exports = class shecgw {
      */
     async GetsjJkmjk(url) {
         if (!url || url.length == 0) {
-            logger.debug("no parameter specified")
+            this.debug("no parameter specified")
             return {
                 code: "-1",
                 message: "no parameter specified"
@@ -213,7 +219,7 @@ module.exports = class shecgw {
             const postData = {
                 "data": url,
             }
-            logger.debug(postData)
+            this.debug(postData)
 
             const token = await this.getAccessToken();
             if (token.code !== '0') {
@@ -229,7 +235,7 @@ module.exports = class shecgw {
                     'access_token': token.token
                 },
             }
-            logger.debug(postOptions)
+            this.debug(postOptions)
             // 返回结果事例
             // {
             // "code": "0",
@@ -239,13 +245,13 @@ module.exports = class shecgw {
 
             let r = await axios.post(this.#getJkmUserInfoUrl, postData, postOptions);
             let ret = r.data
-            logger.debug(ret)
+            this.debug(ret)
             if (ret.code != '0') {
                 return ret;
             }
 
         } catch (err) {
-            logger.debug(err)
+            this.debug(err)
             return {
                 code: "-1",
                 message: err.message
@@ -281,11 +287,11 @@ module.exports = class shecgw {
             },
         }
 
-        logger.debug(postOptions);
+        this.debug(postOptions);
 
         try {
             let r = await axios.post(this.#getYimiaoUrl, postData, postOptions);
-            logger.debug(r.data)
+            this.debug(r.data)
             const result = r.data
             if (result.code != 200) {
                 return {
@@ -319,8 +325,8 @@ module.exports = class shecgw {
                 o.jzdStr = codeTable.getXzqh(o.jzd);
             })
 
-            logger.debug(ymxx);
-            return ymxx;
+            this.debug(ymxx);
+            return {code: '0', data: ymxx};
 
         } catch (err) {
             logger.log(err)

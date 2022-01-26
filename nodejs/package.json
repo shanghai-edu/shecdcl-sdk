@@ -4,11 +4,12 @@
   "description": "",
   "main": "shecgw.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha"
   },
   "author": "WANG Yuping",
   "license": "ISC",
   "dependencies": {
+    "assert": "^2.0.0",
     "axios": "^0.25.0",
     "log4js": "^6.4.1",
     "node-cache": "^5.1.2"

@@ -45,11 +45,12 @@
 ## 目前支持的语言
 
 - [Go](https://github.com/shanghai-edu/shecdcl-sdk/blob/main/go/README.MD)
+- [Nodejs](https://github.com/shanghai-edu/shecdcl-sdk/tree/main/nodejs)
 
 ## 参与贡献
 
-- [freedomkk-qfeng](https://github.com/freedomkk-qfeng)
-
+- [Feng_Qi](https://github.com/freedomkk-qfeng)
+- [WANG Yuping](https://github.com/inforix)
 ## 说明
 
 SDK 由上海教育社区自发开源，不代表官方立场。
