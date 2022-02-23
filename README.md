@@ -51,6 +51,7 @@
 
 - [Feng_Qi](https://github.com/freedomkk-qfeng)
 - [WANG Yuping](https://github.com/inforix)
+- [Xu Yanyan](https://github.com/xuyanyan)
 ## 说明
 
 SDK 由上海教育社区自发开源，不代表官方立场。
