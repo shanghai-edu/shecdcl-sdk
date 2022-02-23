@@ -152,4 +152,53 @@ func main() {
 		  "hsjcjgmc": "苏州第九人民医院"
 		}
 	*/
+
+	//上海市核酸检测信息调用示例
+	hsAllRes, err := c.GetSjHsjcjgcxSjgt("冯小骐", "360732197709013718")
+	if err != nil {
+		log.Fatalln(err)
+		return
+	}
+	//raw output
+	/*
+		{"code":"0","message":"success","data":[{"sample_orgname":"上海第九人民医院","test_orgname":"上海第九人民医院","card_type":"1","sample_type":1,"card_type_name":"身份证","check_project":"核酸","sample_type_name":"鼻咽拭子","collect_date":"2022-02-03 17:41:45","card_no":"360732197709013718","name":"冯小骐","sample_date":"2022-02-03 08:46:33","nat_result":1,"nat_result_name":"ORF1a/b阴性，N基因阴性","report_date":"2022-02-03 17:41:45"},{"sample_orgname":"上海第五人民医院","test_orgname":"上海第五人民医院","card_type":"1","sample_type":1,"card_type_name":"身份证","check_project":"核酸","sample_type_name":"鼻咽拭子","collect_date":"2021-12-23 18:48:01","card_no":"360732197709013718","name":"冯小骐","sample_date":"2021-12-23 09:25:06","nat_result":1,"nat_result_name":"ORF1a/b阴性，N基因阴性","report_date":"2021-12-23 18:48:01"}]}
+	*/
+	bs, _ = json.MarshalIndent(hsAllRes.Data, " ", " ")
+	fmt.Println(string(bs))
+	//sdk data output
+	/*
+				[
+		  {
+		   "name": "冯小骐",
+		   "card_no": "360732197709013718",
+		   "card_type": "1",
+		   "card_type_name": "身份证",
+		   "sample_orgname": "上海第九人民医院",
+		   "test_orgname": "上海第九人民医院",
+		   "sample_type": 1,
+		   "sample_type_name": "鼻咽拭子",
+		   "check_project": "核酸",
+		   "collect_date": "2022-02-03 17:41:45",
+		   "sample_date": "2022-02-03 08:46:33",
+		   "nat_result": 1,
+		   "nat_result_name": "ORF1a/b阴性，N基因阴性",
+		   "report_date": "2022-02-03 17:41:45"
+		  },
+		  {
+		   "name": "冯小骐",
+		   "card_no": "360732197709013718",
+		   "card_type": "1",
+		   "card_type_name": "身份证",
+		   "sample_orgname": "上海第五人民医院",
+		   "test_orgname": "上海第五人民医院",
+		   "sample_type": 1,
+		   "sample_type_name": "鼻咽拭子",
+		   "check_project": "核酸",
+		   "collect_date": "2021-12-23 18:48:01",
+		   "sample_date": "2021-12-23 09:25:06",
+		   "nat_result": 1,
+		   "nat_result_name": "ORF1a/b阴性，N基因阴性",
+		   "report_date": "2021-12-23 18:48:01"
+		  }]
+	*/
 }
