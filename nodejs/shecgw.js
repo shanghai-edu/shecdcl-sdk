@@ -4,6 +4,7 @@ const axios = require('axios')
 const NodeCache = require('node-cache')
 const logger = require('log4js').getLogger('default')
 const codeTable = require('./code')
+const CryptoJS = require('crypto-js')
 
 module.exports = class shecgw {
     #appId = '';
@@ -15,6 +16,8 @@ module.exports = class shecgw {
     #getHsjcUrl = '';
     #getJkmUserInfoUrl = '';
     #getYimiaoUrl = '';
+    #unitId = '';
+    #enStr = '';
 
     // 系统级缓存
     #accessTokenCache = new NodeCache({
@@ -27,21 +30,28 @@ module.exports = class shecgw {
       }
     }
 
-    constructor(appId, appSecret, apiGwEndPoint, debug = false) {
-        if(!appId) throw 'Parameter appId cannot be null';
-        if(!appSecret) throw 'Parameter appSecret cannot be null';
-        if(!apiGwEndPoint) throw 'Parametter apiGwEndPoint cannot be null';
+    constructor(config) {
+        if (!config) throw 'Parameter config cannot be null';
+        if(typeof(config) !== 'object') throw 'Parameter config must be a JSON object';
 
-        this.#appId = appId;
-        this.#appSecret = appSecret;
-        this.#apiGwEndPoint = apiGwEndPoint;
-        this.#debug = debug;
+        if(!config.appId) throw 'Parameter config.appId cannot be null';
+        if(!config.appSecret) throw 'Parameter config.appSecret cannot be null';
+        if(!config.apiGwEndPoint) throw 'Parametter config.apiGwEndPoint cannot be null';
+        if(!config.unitId) throw 'Parameter config.unitId cannot be null';
+        this.#appId = config.appId;
+        this.#appSecret = config.appSecret;
+        this.#apiGwEndPoint = config.apiGwEndPoint;
+        this.#debug = config.debug;
+        this.#unitId = config.unitId;
 
-        this.#getAccessTokenUrl = apiGwEndPoint + '/gateway/auth/accesstoken/create';
-        this.#getHealthUrl = apiGwEndPoint + '/gateway/interface-sj-ssmjm/getInfo';
-        this.#getHsjcUrl = apiGwEndPoint + '/gateway/interface-gj-xgfy-hsjcsjfwjk/getInfo';
-        this.#getJkmUserInfoUrl = apiGwEndPoint + '/gateway/interface-sj-jkmjk/getInfo';
-        this.#getYimiaoUrl = apiGwEndPoint + '/gateway/interface-gj-xgymjzxx/getInfo';
+        this.#getAccessTokenUrl = config.apiGwEndPoint + '/gateway/auth/accesstoken/create';
+        this.#getHealthUrl = config.apiGwEndPoint + '/gateway/interface-sj-ssmjm/getInfo';
+        this.#getHsjcUrl = config.apiGwEndPoint + '/gateway/interface-gj-xgfy-hsjcsjfwjk/getInfo';
+        this.#getJkmUserInfoUrl = config.apiGwEndPoint + '/gateway/interface-sj-jkmjk-new/getInfo';
+        this.#getYimiaoUrl = config.apiGwEndPoint + '/gateway/interface-gj-xgymjzxx/getInfo';
+
+        let hash  = CryptoJS.SHA1(config.unitId + ':' + config.#appSecret);
+        this.#enStr = hash.toString(CryptoJS.enc.Hex);
     }
 
     /**
@@ -218,6 +228,8 @@ module.exports = class shecgw {
         try {
             const postData = {
                 "data": url,
+                "unit_id": this.#unitId,
+                "enStr": this.#enStr
             }
             this.debug(postData)
 
