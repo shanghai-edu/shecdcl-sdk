@@ -47,4 +47,12 @@ describe('shecgw', function (){
         })
     })
 
+    describe('#getHscyxxcx',function(){
+        it('should get hscy inforation', async function(){
+            let ret = await gw.GetHscyxxcx(ZJHM);
+
+            assert.eequal(ret.code, '0');
+        })
+    })
+
 })

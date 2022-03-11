@@ -14,6 +14,7 @@ module.exports = class shecgw {
     #getAccessTokenUrl = '';
     #getHealthUrl = '';
     #getHsjcUrl = '';
+    #getHsjccyUrl = '';
     #getJkmUserInfoUrl = '';
     #getYimiaoUrl = '';
     #unitId = '';
@@ -49,6 +50,7 @@ module.exports = class shecgw {
         this.#getHsjcUrl = config.apiGwEndPoint + '/gateway/interface-gj-xgfy-hsjcsjfwjk/getInfo';
         this.#getJkmUserInfoUrl = config.apiGwEndPoint + '/gateway/interface-sj-jkmjk-new/getInfo';
         this.#getYimiaoUrl = config.apiGwEndPoint + '/gateway/interface-gj-xgymjzxx/getInfo';
+        this.#getHsjccyUrl= config.apiGwEndPoint + '/gateway/interface-sj-hscyxxcx/getInfo';
 
         let hash  = CryptoJS.SHA1(config.unitId + ':' + config.#appSecret);
         this.#enStr = hash.toString(CryptoJS.enc.Hex);
@@ -212,6 +214,49 @@ module.exports = class shecgw {
     }
 
     /**
+     * 获取核酸检测采样信息
+     * @param {string} zjhm 证件号码
+     * @returns 
+     */
+     async GetHscyxxcx(zjhm) {
+        // Try to get result
+        const postData = {
+            "card_no": zjhm
+        }
+
+        const token = await this.getAccessToken();
+        if (token.code !== '0') {
+            logger.log('failed to get access token', token.message);
+            return token;
+        }
+
+        const postOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                'authoritytype': '2',
+                'elementsVersion': '1.00',
+                'access_token': token.token
+            },
+        }
+
+        this.debug(postOptions);
+
+        try {
+            let r = await axios.post(this.#getHsjccyUrl, postData, postOptions);
+            this.debug(r.data)
+            const result = r.data
+            return result;
+
+        } catch (err) {
+            logger.log(err)
+            return {
+                code: "-1",
+                message: err.toString()
+            }
+        }
+    }
+
+    /**
      * 扫码获取人员信息
      * @param {string} url 
      * @returns 
@@ -251,7 +296,7 @@ module.exports = class shecgw {
             // 返回结果事例
             // {
             // "code": "0",
-            //  "data": "{\"xm\":\"王玉平\",\"phone\":\"137****3711\",\"type\":\"00\",\"zjhm\":\"370782********1417\",\"dzzz\":\"1\",\"uuid\":\"*****\"}",
+            //  "data": "{\"xm\":\"王*平\",\"phone\":\"137****3711\",\"type\":\"00\",\"zjhm\":\"370782********1417\",\"dzzz\":\"1\",\"uuid\":\"*****\"}",
             // "message": ""
             // }
 
