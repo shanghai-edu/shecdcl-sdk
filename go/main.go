@@ -18,7 +18,7 @@ func main() {
 	*/
 	config := shecgw.Config{
 		AppId:         "app_id",
-		AppSecret:     "app_secert",
+		AppSecret:     "app_secret",
 		ApiGwEndpoint: "https://apigw.shec.edu.cn", //默认 https://apigw.shec.edu.cn
 		Debug:         true,                        //默认 false，true 时将打印接口原始输出
 	}
@@ -200,5 +200,27 @@ func main() {
 		   "nat_result_name": "ORF1a/b阴性，N基因阴性",
 		   "report_date": "2021-12-23 18:48:01"
 		  }]
+	*/
+
+	//上海市核酸采样信息调用示例
+	hsCyRes, err := c.GetSjHscyxxcx("360732197709013718")
+	if err != nil {
+		log.Fatalln(err)
+		return
+	}
+	//raw output
+	/*
+		{"code":"0","message":"success","data":[{"card_no":"360732197709013718","real_name":"冯小骐","sample_org_name":"上海千麦博米乐医学检验所","sample_station_name":"上海千麦博米乐医学检验所","print_time":"2022-03-10 17:06:45"}]}	*/
+	bs, _ := json.MarshalIndent(hsCyRes.Data, " ", " ")
+	fmt.Println(string(bs))
+	//sdk data output
+	/*
+		{
+			"card_no": "360732197709013718",
+			"real_name": "冯小骐",
+			"sample_org_name": "上海千麦博米乐医学检验所",
+			"sample_station_name": "上海千麦博米乐医学检验所",
+			"print_time": "2022-03-10 17:06:45"
+		}
 	*/
 }
