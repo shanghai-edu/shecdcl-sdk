@@ -30,12 +30,12 @@ type HscjShData struct {
 	CARDTYPENAME   string `json:"card_type_name"`   //证件类型名称
 	SAMPLEORG      string `json:"sample_orgname"`   //采样机构
 	TESTORG        string `json:"test_orgname"`     //检测机构
-	SAMPLETYPE     int    `json:"sample_type"`      //样本类型
+	SAMPLETYPE     string `json:"sample_type"`      //样本类型
 	SAMPLETYPENAME string `json:"sample_type_name"` //样本类型名称
 	CHECKPROJECT   string `json:"check_project"`    //核酸检测类型：核酸/核酸抗体
 	COLLECTDATE    string `json:"collect_date"`     //收样时间
 	SAMPLEDATE     string `json:"sample_date"`      //采样时间
-	NATRESULT      int    `json:"nat_result"`       //检测结果
+	NATRESULT      string `json:"nat_result"`       //检测结果
 	NATRESULTNAME  string `json:"nat_result_name"`  //检测结果名称
 	REPORTDATE     string `json:"report_date"`      //检测结果报告时间
 }
