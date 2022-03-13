@@ -14,6 +14,7 @@ module.exports = class shecgw {
     #getAccessTokenUrl = '';
     #getHealthUrl = '';
     #getHsjcUrl = '';
+    #getHsjcjgcxUrl = '';
     #getHsjccyUrl = '';
     #getJkmUserInfoUrl = '';
     #getYimiaoUrl = '';
@@ -51,6 +52,7 @@ module.exports = class shecgw {
         this.#getJkmUserInfoUrl = config.apiGwEndPoint + '/gateway/interface-sj-jkmjk-new/getInfo';
         this.#getYimiaoUrl = config.apiGwEndPoint + '/gateway/interface-gj-xgymjzxx/getInfo';
         this.#getHsjccyUrl= config.apiGwEndPoint + '/gateway/interface-sj-hscyxxcx/getInfo';
+        this.#getHsjcjgcxUrl = config.apiGwEndPoint + '/gateway/interface-sj-hsjcjgcx-sjgt/getInfo';
 
         let hash  = CryptoJS.SHA1(config.unitId + ':' + config.#appSecret);
         this.#enStr = hash.toString(CryptoJS.enc.Hex);
@@ -146,7 +148,7 @@ module.exports = class shecgw {
     }
 
     /**
-     * 获取核酸检测信息
+     * 获取核酸检测信息-来源:市大数据中心(全国)
      * @param {string} xm 
      * @param {string} zjhm 
      * @returns 
@@ -204,6 +206,49 @@ module.exports = class shecgw {
             value.code = "0"
             return value
 
+        } catch (err) {
+            logger.log(err)
+            return {
+                code: "-1",
+                message: err.toString()
+            }
+        }
+    }
+
+    /**
+     * 获取核酸检测信息-来源:市大数据中心(上海)
+     * @param {string} xm 
+     * @param {string} zjhm 
+     * @returns 
+     */
+     async GetHsjcjgcx(xm, zjhm) {
+        // Try to get result
+        const postData = {
+            "xm": xm,
+            "zjhm": zjhm
+        }
+
+        const token = await this.getAccessToken();
+        if (token.code !== '0') {
+            logger.log('failed to get access token', token.message);
+            return token;
+        }
+
+        const postOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                'authoritytype': '2',
+                'elementsVersion': '1.00',
+                'access_token': token.token
+            },
+        }
+
+        this.debug(postOptions);
+
+        try {
+            let r = await axios.post(this.#getHsjcjgcxUrl, postData, postOptions);
+            this.debug(r.data);
+            return r.data;
         } catch (err) {
             logger.log(err)
             return {

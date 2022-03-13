@@ -39,6 +39,14 @@ describe('shecgw', function (){
         })
     });
 
+    describe('#GetHsjcjgcx', function(){
+        it('shoud get none', async function(){
+            let ret = await gw.GetHsjcjgcx(XM, ZJHM);
+
+            assert.equal(ret.code, '0');
+        })
+    });
+
     describe('#GetGjXgymjzxx', function(){
         it('should get 3 times', async function(){
             let ret = await gw.GetGjXgymjzxx(XM, ZJHM);
