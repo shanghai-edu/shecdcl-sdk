@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
+	//	"strings"
+
 	"encoding/json"
 	"errors"
 
@@ -22,12 +24,12 @@ type SSM struct {
 }
 
 type SsmReq struct {
-	XM   string `json:"XM"`
+	//	XM   string `json:"XM"`
 	ZJHM string `json:"ZJHM"`
 }
 
 //市级-随申码解码
-func (c *Client) GetSjSsmjm(xm, zjhm string) (result SsmAPIResult, err error) {
+func (c *Client) GetSjSsmjm(zjhm string) (result SsmAPIResult, err error) {
 	if err := c.GetAccessToken(); err != nil {
 		return result, err
 	}
@@ -40,7 +42,7 @@ func (c *Client) GetSjSsmjm(xm, zjhm string) (result SsmAPIResult, err error) {
 		"Content-Type":    "application/json",
 	}
 	req := SsmReq{
-		XM:   xm,
+		//	XM:   xm,
 		ZJHM: zjhm,
 	}
 
@@ -59,7 +61,7 @@ func (c *Client) GetSjSsmjm(xm, zjhm string) (result SsmAPIResult, err error) {
 	}
 	//如果说令牌过期了，那再来一次
 	if result.Code == "GATEWAY0006" {
-		return c.GetSjSsmjm(xm, zjhm)
+		return c.GetSjSsmjm(zjhm)
 	}
 
 	if result.Code != "0" {

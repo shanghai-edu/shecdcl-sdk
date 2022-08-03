@@ -31,7 +31,7 @@ func main() {
 		如高频使用，建议在低峰期预热缓存
 	*/
 
-	ssmRes, err := c.GetSjSsmjm("冯小骐", "360732197709013718")
+	ssmRes, err := c.GetSjSsmjm("360732197709013718")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -154,7 +154,7 @@ func main() {
 	*/
 
 	//上海市核酸检测信息调用示例
-	hsAllRes, err := c.GetSjHsjcjgcxSjgt("冯小骐", "360732197709013718")
+	hsAllRes, err := c.GetSjHsjcjgcxSjgt("360732197709013718")
 	if err != nil {
 		log.Fatalln(err)
 		return
@@ -165,6 +165,7 @@ func main() {
 	*/
 	bs, _ = json.MarshalIndent(hsAllRes.Data, " ", " ")
 	fmt.Println(string(bs))
+
 	//sdk data output
 	/*
 				[
@@ -211,7 +212,7 @@ func main() {
 	//raw output
 	/*
 		{"code":"0","message":"success","data":[{"card_no":"360732197709013718","real_name":"冯小骐","sample_org_name":"上海千麦博米乐医学检验所","sample_station_name":"上海千麦博米乐医学检验所","print_time":"2022-03-10 17:06:45"}]}	*/
-	bs, _ := json.MarshalIndent(hsCyRes.Data, " ", " ")
+	bs, _ = json.MarshalIndent(hsCyRes.Data, " ", " ")
 	fmt.Println(string(bs))
 	//sdk data output
 	/*

@@ -18,7 +18,7 @@ type ResHscjSh struct {
 }
 
 type ReqXmSfzh struct {
-	XM   string `json:"name"` //姓名
+	//	XM   string `json:"name"` //姓名
 	ZJHM string `json:"sfzh"` //证件号码
 }
 
@@ -42,7 +42,7 @@ type HscjShData struct {
 
 // GetSjHsjcjgcxSjgt 获取核酸检测信息
 //市级-核酸检测结果查询-数据高铁接口
-func (c *Client) GetSjHsjcjgcxSjgt(xm, zjhm string) (result ResHscjSh, err error) {
+func (c *Client) GetSjHsjcjgcxSjgt(zjhm string) (result ResHscjSh, err error) {
 	if err := c.GetAccessToken(); err != nil {
 		return result, err
 	}
@@ -55,7 +55,7 @@ func (c *Client) GetSjHsjcjgcxSjgt(xm, zjhm string) (result ResHscjSh, err error
 		"Content-Type":    "application/json",
 	}
 	req := ReqXmSfzh{
-		XM:   xm,
+		//	XM:   xm,
 		ZJHM: zjhm,
 	}
 
@@ -75,7 +75,7 @@ func (c *Client) GetSjHsjcjgcxSjgt(xm, zjhm string) (result ResHscjSh, err error
 
 	//如果说令牌过期了，那再来一次
 	if result.ErrCode == "GATEWAY0006" {
-		return c.GetSjHsjcjgcxSjgt(xm, zjhm)
+		return c.GetSjHsjcjgcxSjgt(zjhm)
 	}
 
 	if result.Code != "0" {
